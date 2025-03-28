@@ -9,7 +9,6 @@ const generateToken = (payload: Tokenpayload) => {
         console.error(
           "Error: JWT_SECRET is not defined in the environment variables."
         );
-        process.exit(1);
       }
     const token = jwt.sign(payload, secretKey, { expiresIn: "1h" });
     return token;

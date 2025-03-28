@@ -30,7 +30,8 @@ export const registerUser = async (req: Request, res: Response) => {
       res.status(400).json({ message: "User aleady exists in the database" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
 
     const newUser = await pool.query(
       "INSERT INTO users (name, email,password) VALUES ($1, $2,$3) RETURNING id,name,email",
@@ -58,3 +59,4 @@ const bodySchema = z.object({
   email: z.string().trim().email(),
   password: z.string().trim().min(6),
 });
+

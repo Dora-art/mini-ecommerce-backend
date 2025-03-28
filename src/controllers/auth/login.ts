@@ -12,7 +12,7 @@ export const loginUser = async (req: Request, res: Response) => {
     ]);
 
     if (userData.rows.length === 0) {
-       res.status(400).json({ message: "Invalid credentials" });
+      res.status(400).json({ message: "Invalid credentials" });
     }
 
     const user = userData.rows[0];
@@ -20,14 +20,7 @@ export const loginUser = async (req: Request, res: Response) => {
     const isPassword = await bcrypt.compare(password, user.password);
 
     if (!isPassword) {
-       res.status(401).json({ message: "Invalid credentials" });
-    }
-    const SECRET_KEY = process.env.JWT_SECRET as string;
-    if (!SECRET_KEY) {
-      console.error(
-        "Error: JWT_SECRET is not defined in the environment variables."
-      );
-      process.exit(1);
+      res.status(401).json({ message: "Invalid credentials" });
     }
 
     const token = generateToken({ id: user.id, email: user.email });
